@@ -1,7 +1,7 @@
 package main;
 
 import custom.ConsoleColors;
-import model.User;
+import model.Service;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -19,20 +19,22 @@ public class Main {
 
     }
 
-    public static void welcome(){
-        Scanner sc = new Scanner(System.in);
-        System.out.println(ConsoleColors.CYAN_BACKGROUND+ConsoleColors.RED+"##############################################################################################################################################################################");
-        System.out.println("                                      " +ConsoleColors.CYAN_BACKGROUND+ConsoleColors.RED+"WELCOME TO BIBLIOSYTEM"+ ConsoleColors.RESET+"                                                                                       #");
-        System.out.println("                                      " +ConsoleColors.BLUE_BOLD_BRIGHT+"The standalone system to manage your library" + ConsoleColors.RESET+"                                                                                 #");
-        System.out.println(ConsoleColors.CYAN_BACKGROUND+ConsoleColors.RED+"##############################################################################################################################################################################");
-        System.out.println("                                      " +ConsoleColors.PURPLE_BOLD_BRIGHT + "[1] LOG IN"+ ConsoleColors.RESET);
-//        System.out.println("Press 2 to" +ConsoleColors.PURPLE_BOLD_BRIGHT + " Register as Buyer." + ConsoleColors.RESET);
-//        System.out.println("Press 3 to" +ConsoleColors.PURPLE_BOLD_BRIGHT + " logIn as Buyer."+ ConsoleColors.RESET);
-//        System.out.println("Press 4 to" +ConsoleColors.PURPLE_BOLD_BRIGHT + " Register as Seller." + ConsoleColors.RESET);
-//        System.out.println("Press 5 to" +ConsoleColors.PURPLE_BOLD_BRIGHT + " logIn as Seller."+ ConsoleColors.RESET);
-        System.out.println("                                      " +ConsoleColors.PURPLE_BOLD_BRIGHT +"[2] EXIT"+ ConsoleColors.RESET);
-        System.out.print("                                      " +ConsoleColors.BLUE +"CHOOSE AN OPTION: "+ ConsoleColors.RESET);
-        String choice = sc.nextLine();
+    public static void welcome() throws SQLException {
+        Service service = new Service();
+        System.out.println(service.checkClient("salaah@gmail.com"));
+//        Scanner sc = new Scanner(System.in);
+//        System.out.println(ConsoleColors.CYAN_BACKGROUND+ConsoleColors.RED+"##############################################################################################################################################################################");
+//        System.out.println("                                      " +ConsoleColors.CYAN_BACKGROUND+ConsoleColors.RED+"WELCOME TO BIBLIOSYTEM"+ ConsoleColors.RESET+"                                                                                       #");
+//        System.out.println("                                      " +ConsoleColors.BLUE_BOLD_BRIGHT+"The standalone system to manage your library" + ConsoleColors.RESET+"                                                                                 #");
+//        System.out.println(ConsoleColors.CYAN_BACKGROUND+ConsoleColors.RED+"##############################################################################################################################################################################");
+//        System.out.println("                                      " +ConsoleColors.PURPLE_BOLD_BRIGHT + "[1] LOG IN"+ ConsoleColors.RESET);
+////        System.out.println("Press 2 to" +ConsoleColors.PURPLE_BOLD_BRIGHT + " Register as Buyer." + ConsoleColors.RESET);
+////        System.out.println("Press 3 to" +ConsoleColors.PURPLE_BOLD_BRIGHT + " logIn as Buyer."+ ConsoleColors.RESET);
+////        System.out.println("Press 4 to" +ConsoleColors.PURPLE_BOLD_BRIGHT + " Register as Seller." + ConsoleColors.RESET);
+////        System.out.println("Press 5 to" +ConsoleColors.PURPLE_BOLD_BRIGHT + " logIn as Seller."+ ConsoleColors.RESET);
+//        System.out.println("                                      " +ConsoleColors.PURPLE_BOLD_BRIGHT +"[2] EXIT"+ ConsoleColors.RESET);
+//        System.out.print("                                      " +ConsoleColors.BLUE +"CHOOSE AN OPTION: "+ ConsoleColors.RESET);
+//        String choice = sc.nextLine();
     }
 
 }
