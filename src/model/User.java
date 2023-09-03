@@ -2,31 +2,37 @@ package model;
 
 import utility.DBUtility;
 
-import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 
-import static utility.DBUtility.resultSetToTableModel;
-
 public class User {
-    private Statement stmt;
+    private Connection con;
+    public StringBuilder resultString;
 
-    public User() throws SQLException {
+    public User() {
         try {
         utility.DBUtility db = new DBUtility();
-        Connection con = db.provideConnection();
-        this.stmt = con.createStatement();
+        this.con = db.provideConnection();
+        this.resultString = new StringBuilder();
         }catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
-    public boolean login(String email, String password) throws SQLException {
-        stmt.executeQuery("SELECT Email, Password FROM user WHERE Email = ? AND Password = ?");
-        return true;
+    public Boolean login(String email, String password) throws SQLException {
+        PreparedStatement stmt = con.prepareStatement("SELECT Email, Password FROM user WHERE Email LIKE  ? AND Password LIKE ?");
+        stmt.setString(1, email);
+        stmt.setString(2, password);
+        ResultSet result = stmt.executeQuery();
+        return result.getString("Email").isBlank();
     }
 
-    public DefaultTableModel getUsers() throws SQLException {
-        ResultSet result = stmt.executeQuery("SELECT * FROM user");
-        System.out.println(result);
-        return resultSetToTableModel(null, result);
+    public String getUsers() throws SQLException {
+        ResultSet result = con.createStatement().executeQuery("SELECT * FROM user");
+        while (result.next()) {
+            int id = result.getInt("Id");
+            String name = result.getString("Name");
+            String email = result.getString("Email");
+            this.resultString.append("ID: ").append(id).append("\tName: ").append(name).append("\tEmail: ").append(email).append("\n");
+        }
+        return resultString.toString();
     }
 }
