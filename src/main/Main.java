@@ -1,29 +1,21 @@
 package main;
 
-import custom.ConsoleColors;
-import model.Book;
-import model.Service;
-import model.User;
+import implementation.PrintImplementation;
+import implementation.ServiceImplementation;
 
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Scanner;
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
     public static void main(String[] args) throws SQLException {
-//        model.User user = new model.User();
+//        implementation.User user = new implementation.User();
 //        System.out.println(user.login("sidati@gmail.com", "sidati@123"));
         welcome();
 
     }
 
     public static void welcome() throws SQLException {
-        Service service = new Service();
-        System.out.println(service.returnBook(111100, "salah@gmail.com"));
 //        Book book = new Book();
 //        System.out.println(book.add(234955, "The social contract", "JJ Rousseau", 1784));
 //        User user = new User();

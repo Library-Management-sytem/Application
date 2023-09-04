@@ -1,11 +1,21 @@
 package main;
 
-public class User {
+public class Client {
+
     private Integer Id;
     private String Name;
     private String Email;
-    private String Password;
-    private Boolean isAdmin;
+    private static Client instance;
+
+    private Client(String name, String email){
+        this.Name = name;
+        this.Email = email;
+    }
+    public static Client getInstance(String name, String email) {
+        if (instance == null)
+            instance = new Client(name, email);
+        return instance;
+    }
 
     public Integer getId() {
         return Id;
@@ -18,34 +28,16 @@ public class User {
     public String getName() {
         return Name;
     }
-
     public void setName(String name) {
         this.Name = name;
     }
 
+
     public String getEmail() {
         return Email;
     }
-
     public void setEmail(String email) {
         this.Email = email;
-    }
-
-    public String getPassword() {
-        return Password;
-    }
-
-    public void setPassword(String password) {
-        this.Password = password;
-
-    }
-
-    public Boolean getIsAdmin() {
-        return isAdmin;
-    }
-
-    public void setIsAdmin(Boolean isAdmin) {
-        this.isAdmin = isAdmin;
     }
 
 }
