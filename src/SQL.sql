@@ -33,6 +33,7 @@ create table service (
     ReturnDate Date,
     ClientId int,
     UserId int,
+    Returned bool default false,
     foreign key (bookId) references book(ISBN),
     foreign key (ClientId) references client(Id) ,
     foreign key (UserId) references user(Id)
@@ -41,6 +42,6 @@ create table service (
 insert into user (Name,Email,Password,IsAdmin) values ('Sidati','sidati@gmail.com','sidati@123',true);
 insert into book (ISBN, Name, Author, Year) values (111100, '1984', 'Jorge ORWELL', 1949),
                                                    (111101, 'Animal farm', 'Jorge ORWELL', 1940),
-                                                   (236789, 'Atomic habits', 'Flan ben flan', 2016),
-                                                   (236789, 'How to become a human', 'Flan ben fertlan', 2023);
+                                                   (236789, 'The social contract', 'J.J Rousseau', 2016);
 insert into client (Name, Email) values ('Hassan','hassan@gmail.com');
+INSERT INTO service (BookId, ReturnDate, UsersId, ClientId)  values (111100, '2023-09-19', 1, 1);

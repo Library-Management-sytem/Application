@@ -6,36 +6,53 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Objects;
 
 public class Service {
     private final Connection con;
+
     public Service() {
         DBUtility db = new DBUtility();
         this.con = db.provideConnection();
     }
-    public Boolean returnBook(String clientName, String email) {
-        return true;
 
-    }
-    // This method searches for the user by email and returns its ID if it exists, returns null id not
-    public Integer checkClient(String email) {
-        try {
-            PreparedStatement stmt = con.prepareStatement("SELECT Id, Email FROM client WHERE Email = ?");
-            stmt.setString(1, email);
+    public Integer getServiceId(Integer isbn, String email) throws SQLException {
+        Integer clientId = Client.getClientByEmail(email);
+        if (clientId != null) {
+            PreparedStatement stmt = con.prepareStatement("SELECT Id FROM service WHERE BookId = ? AND ClientId = ? AND returned = false LIMIT 1");
+            stmt.setInt(1, isbn);
+            stmt.setInt(2, clientId);
             ResultSet result = stmt.executeQuery();
-            while (result.next()) {
-                String resultEmail = result.getString("Email");
-                if (Objects.equals(resultEmail, email))
-                    return result.getInt("Id");
-                break;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            if (result.next())
+                return result.getInt("Id");
+        }
+        System.out.println("Service not found, please enter a valid ISBN or email");
+        return null;
+    }
+
+    public Boolean returnBook(Integer isbn, String email) throws SQLException {
+        Integer borrowId = this.getServiceId(isbn, email);
+        if (borrowId != null) {
+            PreparedStatement stmt = con.prepareStatement("UPDATE service SET returned = true WHERE Id = " + borrowId);
+            if (Book.makeAvailable(isbn))
+                return stmt.executeUpdate() > 0;
+        }
+        return false;
+    }
+
+    // This method searches for the user by email and returns its ID if it exists, returns null id not
+    public Integer checkClient(String email) throws SQLException {
+        PreparedStatement stmt = con.prepareStatement("SELECT Id, Email FROM client WHERE Email = ? LIMIT 1");
+        stmt.setString(1, email);
+        ResultSet result = stmt.executeQuery();
+        while (result.next()) {
+            String resultEmail = result.getString("Email");
+            if (resultEmail.equals(email))
+                return result.getInt("Id");
         }
         return null;
     }
-    public Boolean loan() {
+
+    public Boolean loan(String clientEmail, String clientName, Integer bookId, String returnDate) {
         return true;
     }
 }

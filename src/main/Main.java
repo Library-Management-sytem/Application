@@ -1,7 +1,9 @@
 package main;
 
 import custom.ConsoleColors;
+import model.Book;
 import model.Service;
+import model.User;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -21,7 +23,13 @@ public class Main {
 
     public static void welcome() throws SQLException {
         Service service = new Service();
-        System.out.println(service.checkClient("salaah@gmail.com"));
+        System.out.println(service.returnBook(111100, "salah@gmail.com"));
+//        Book book = new Book();
+//        System.out.println(book.add(234955, "The social contract", "JJ Rousseau", 1784));
+//        User user = new User();
+//        System.out.println(user.login("sidati@gmail.com", "sidati@123"));
+//        Service service = new Service();
+//        System.out.println(service.checkClient("salaah@gmail.com"));
 //        Scanner sc = new Scanner(System.in);
 //        System.out.println(ConsoleColors.CYAN_BACKGROUND+ConsoleColors.RED+"##############################################################################################################################################################################");
 //        System.out.println("                                      " +ConsoleColors.CYAN_BACKGROUND+ConsoleColors.RED+"WELCOME TO BIBLIOSYTEM"+ ConsoleColors.RESET+"                                                                                       #");
