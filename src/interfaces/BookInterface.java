@@ -1,14 +1,12 @@
 package interfaces;
 
-import implementation.BookImplementation;
-import main.Book;
-
-import java.sql.SQLException;
+import exception.BookException;
+import models.Book;
 
 public interface BookInterface {
 
-    Book get(Book book) throws SQLException;
-    Book Add(Book book) throws SQLException;
-    Book Update(Book book) throws SQLException;
-    Book Delete(Book book) throws SQLException;
+    Book get(Book book) throws BookException;
+    Boolean Add(Book book) throws BookException;
+    Boolean Update(Book book) throws BookException;
+    Boolean Delete(Book book) throws BookException;
 }

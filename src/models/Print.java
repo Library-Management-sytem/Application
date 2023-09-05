@@ -1,23 +1,19 @@
-package main;
+package models;
+
+import java.util.List;
 
 public class Print {
     public static Print instance;
     private Integer Id;
     private Integer ISBN;
     private String Status;
-    private Boolean Archived = false;
+    private Boolean Archived;
+    private List<Print> prints;
 
-    private Print(Integer ISBN) {
+    public Print(Integer ISBN) {
         this.ISBN = ISBN;
         this.Status = "Available";
         this.Archived = false;
-    }
-
-
-    public static Print getInstance(Integer ISBN) {
-        if (instance == null)
-            instance = new Print(ISBN);
-        return instance;
     }
 
     public Integer getId() {

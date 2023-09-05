@@ -1,4 +1,4 @@
-package main;
+package models;
 
 public class User {
     private Integer Id;
@@ -6,6 +6,9 @@ public class User {
     private String Email;
     private String Password;
     private Boolean isAdmin;
+    public User(){
+
+    }
 
     public Integer getId() {
         return Id;

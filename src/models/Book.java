@@ -1,26 +1,22 @@
-package main;
+package models;
+
+import java.util.List;
 
 public class Book {
-    private static Book instance;
     private Integer ISBN;
     private String Name;
     private String Author;
     private Integer Year;
+    private List<Book> books;
 
-    private Book(){
+    public Book(){
 
     }
-    private Book(Integer isbn, String name, String author, Integer year) {
+    public Book(Integer isbn, String name, String author, Integer year) {
         this.ISBN = isbn;
         this.Name = name;
         this.Author = author;
         this.Year = year;
-    }
-
-    public static Book getInstance(Integer isbn, String name, String author, Integer year) {
-        if (instance == null)
-            instance = new Book(isbn, name, author, year);
-        return instance;
     }
 
     public Integer getISBN(){

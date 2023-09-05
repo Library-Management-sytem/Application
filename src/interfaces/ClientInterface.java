@@ -1,13 +1,13 @@
 package interfaces;
 
-import main.Client;
-
-import java.sql.SQLException;
+import exception.ClientException;
+import models.Client;
 
 public interface ClientInterface {
 
-    Client get(Client client) throws SQLException;
-    Client Add(Client client) throws SQLException;
-    Client Update(Client client) throws SQLException;
-    Client Delete(Client client) throws SQLException;
+    Client get(Client client) throws ClientException;
+    Boolean Add(Client client) throws ClientException;
+    Boolean Update(Client client) throws ClientException;
+    Boolean Delete(Client client) throws ClientException;
+    Integer GetId(Client client) throws ClientException;
 }

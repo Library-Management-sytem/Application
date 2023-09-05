@@ -1,15 +1,16 @@
-package implementation;
+package DAO;
 
 import database.MySQL;
+import exception.UserException;
 import interfaces.UserInterface;
-import main.User;
+import models.User;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public class UserImplementation implements UserInterface {
     public StringBuilder resultString;
-    private Connection con = MySQL.provideConnection();
+    private Connection con = MySQL.getInstance();
 
     public UserImplementation() {
         try {
@@ -25,7 +26,7 @@ public class UserImplementation implements UserInterface {
      * @throws SQLException
      */
     @Override
-    public User get(User user) throws SQLException {
+    public User get(User user) throws UserException {
         return null;
     }
 
@@ -35,51 +36,51 @@ public class UserImplementation implements UserInterface {
      * @throws SQLException
      */
     @Override
-    public User Add(User user) throws SQLException {
+    public User Add(User user) throws UserException {
         return null;
     }
 
     /**
      * @param user 
      * @return
-     * @throws SQLException
+     * @throws UserException
      */
     @Override
-    public User Update(User user) throws SQLException {
+    public User Update(User user) throws UserException {
         return null;
     }
 
     /**
      * @param user 
      * @return
-     * @throws SQLException
+     * @throws UserException
      */
     @Override
-    public User Delete(User user) throws SQLException {
+    public User Delete(User user) throws UserException {
         return null;
     }
 
     /**
      * @param user 
      * @return
-     * @throws SQLException
+     * @throws UserException
      */
     @Override
-    public User Login(User user) throws SQLException {
+    public User Login(User user) throws UserException {
         return null;
     }
 
     /**
      * @param user 
      * @return
-     * @throws SQLException
+     * @throws UserException
      */
     @Override
-    public User Logout(User user) throws SQLException {
+    public User Logout(User user) throws UserException {
         return null;
     }
 
-//    public Boolean login(String email, String password) throws SQLException {
+//    public Boolean login(String email, String password) throws UserException {
 //        PreparedStatement stmt = con.prepareStatement("SELECT Email, Password FROM user WHERE Email LIKE  ? AND Password LIKE ?");
 //        stmt.setString(1, email);
 //        stmt.setString(2, password);

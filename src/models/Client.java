@@ -1,20 +1,17 @@
-package main;
+package models;
+
+import java.util.List;
 
 public class Client {
 
     private Integer Id;
     private String Name;
     private String Email;
-    private static Client instance;
+    private List<Client> clients;
 
-    private Client(String name, String email){
+    public Client(String name, String email){
         this.Name = name;
         this.Email = email;
-    }
-    public static Client getInstance(String name, String email) {
-        if (instance == null)
-            instance = new Client(name, email);
-        return instance;
     }
 
     public Integer getId() {

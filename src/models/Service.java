@@ -1,21 +1,22 @@
-package main;
+package models;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class Service {
     public static Service instance;
     private Integer Id;
-    private Date BorrowDate;
+    private String BorrowDate;
     private String  ReturnDate;
     private Integer UserId;
     private Integer ClientId;
     private Boolean Returned;
     private Integer PrintId;
+    private List<Service> services;
 
-    public Service(Date borrowDate, Integer userId, Integer clientId, Integer printId) {
+    public Service(String borrowDate, Integer userId, Integer clientId, Integer printId) {
         this.BorrowDate = borrowDate;
         // Add 15 days to the borrowing date to get return date
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -29,12 +30,6 @@ public class Service {
         this.PrintId = printId;
     }
 
-    public static Service getInstance(Date borrowDate, Integer userId, Integer clientId, Integer printId) {
-        if (instance == null)
-            instance = new Service(borrowDate, userId, clientId, printId);
-        return instance;
-    }
-
     public Integer getId() {
         return Id;
     }
@@ -43,11 +38,11 @@ public class Service {
         this.Id = id;
     }
 
-    public Date getBorrowDate() {
+    public String getBorrowDate() {
         return BorrowDate;
     }
 
-    public void setBorrowDate(Date borrowDate) {
+    public void setBorrowDate(String borrowDate) {
         this.BorrowDate = borrowDate;
     }
 

@@ -1,5 +1,5 @@
-create database if not exists library;
-USE library;
+# create database if not exists library;
+# USE library;
 
 create table user
 (

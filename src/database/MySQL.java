@@ -10,8 +10,7 @@ public class MySQL implements DBUtility {
     public static String url;
     public static String username;
     public static String password;
-
-
+    private static Connection instance;
 
     static {
         ResourceBundle rd =ResourceBundle.getBundle("db");
@@ -20,9 +19,17 @@ public class MySQL implements DBUtility {
         username=rd.getString("db.username");
         password=rd.getString("db.password");
     }
-    public static Connection provideConnection(){
-        Connection connection = null;
+    private MySQL(){
 
+    }
+
+    public static Connection getInstance() {
+        if (instance == null)
+            instance = new MySQL().provideConnection();
+        return instance;
+    }
+    private Connection provideConnection(){
+        Connection connection = null;
         try {
             Class.forName(driver);
         } catch (ClassNotFoundException e) {

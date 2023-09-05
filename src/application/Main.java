@@ -1,7 +1,6 @@
-package main;
+package application;
 
-import implementation.PrintImplementation;
-import implementation.ServiceImplementation;
+import useCases.BookOperations;
 
 import java.sql.SQLException;
 
@@ -9,13 +8,14 @@ import java.sql.SQLException;
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
     public static void main(String[] args) throws SQLException {
-//        implementation.User user = new implementation.User();
+//        DAO.User user = new DAO.User();
 //        System.out.println(user.login("sidati@gmail.com", "sidati@123"));
         welcome();
 
     }
 
-    public static void welcome() throws SQLException {
+    public static void welcome() {
+        BookOperations.addBookInterface();
 //        Book book = new Book();
 //        System.out.println(book.add(234955, "The social contract", "JJ Rousseau", 1784));
 //        User user = new User();
