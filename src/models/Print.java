@@ -5,15 +5,15 @@ import java.util.List;
 public class Print {
     public static Print instance;
     private Integer Id;
-    private Integer ISBN;
     private String Status;
     private Boolean Archived;
     private List<Print> prints;
-
-    public Print(Integer ISBN) {
-        this.ISBN = ISBN;
-        this.Status = "Available";
-        this.Archived = false;
+    private Book book;
+    private Service service;
+    public Print(){}
+    public Print(Book book, Service service) {
+        this.book = book;
+        this.service = service;
     }
 
     public Integer getId() {
@@ -22,14 +22,6 @@ public class Print {
 
     public void setId(Integer id) {
         this.Id = id;
-    }
-
-    public Integer getISBN() {
-        return ISBN;
-    }
-
-    public void setISBN(Integer ISBN) {
-        this.ISBN = ISBN;
     }
 
     public String getStatus() {
@@ -47,4 +39,10 @@ public class Print {
     public void setArchived(Boolean archived) {
         this.Archived = archived;
     }
+    public List<Print> getPrints(){ return this.prints;}
+    public void setPrints(List<Print> prints){this.prints = prints;}
+    public Book getBook(){ return book;}
+    public void setBook(Book book){ this.book = book;}
+    public Service getService(){ return service;}
+    public void setService(Service service){ this.service = service;}
 }
