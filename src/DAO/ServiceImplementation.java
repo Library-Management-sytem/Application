@@ -1,13 +1,20 @@
 package DAO;
 
+import database.Datasource;
 import database.MySQL;
 import exception.ServiceException;
 import interfaces.ServiceInterface;
+import models.Book;
+import models.Client;
 import models.Service;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ServiceImplementation implements ServiceInterface {
     private final Connection con = MySQL.getInstance();
@@ -15,69 +22,62 @@ public class ServiceImplementation implements ServiceInterface {
     public ServiceImplementation() {
     }
 
-    /**
-     * @param service
-     * @return
-     * @throws SQLException
-     */
     @Override
-    public Service get(Service service) throws ServiceException {
-        try {
-            PreparedStatement stmt =  con.prepareStatement("");
-            return service;
-
-        }catch(SQLException e){
-            e.printStackTrace();
-            throw new ServiceException(e.getMessage());
-        }
+    public Boolean get(Service service) throws ServiceException {
+        return false;
     }
-
-    Integer GetId(Service service) throws ServiceException {
+    @Override
+    public List<Service> get() throws ServiceException {
         try {
-            PreparedStatement stmt =  con.prepareStatement("");
-            return 5;
-//            PreparedStatement stmt = con.prepareStatement("SELECT Id FROM service WHERE BookId = ? AND ClientId = ? AND returned = false LIMIT 1");
-//            stmt.setInt(1, service.getB);
-//            stmt.setInt(2, clientId);
-//            ResultSet result = stmt.executeQuery();
-//            if (result.next())
-//                return result.getInt("Id");
+            QueryRunner run = new QueryRunner(Datasource.getMySQLDataSource());
+            ResultSetHandler<List<Service>> h = new BeanListHandler<>(Service.class);
+            return run.query("SELECT * FROM service", h);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             throw new ServiceException(e.getMessage());
         }
     }
 
-    /**
-     * @param service
-     * @return
-     * @throws SQLException
-     */
+    Service GetOne(Book book, Client client) throws ServiceException {
+//        try {
+//            PreparedStatement stmt = con.prepareStatement("SELECT * FROM service WHERE PrintId = ? AND ClientId = ? AND returned = false LIMIT 1");
+//            stmt.setInt(1, book.getISBN());
+//            stmt.setInt(2, client.getId());
+//            ResultSet result = stmt.executeQuery();
+//            Service service = new Service();
+//            if (result.next()){
+//                service.setBorrowDate(result.getString("BorrowDate"));
+//                service.setBorrowDate(result.getString("ReturnDate"));
+//                service.setClient(client);
+//                service.setBoo(book);
+//
+//            }
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+//            throw new ServiceException(e.getMessage());
+//        }
+        return new Service();
+    }
+
     @Override
     public Service Add(Service service) throws ServiceException {
         try {
-            PreparedStatement stmt = con.prepareStatement("INSERT INTO service (BorrowDate, ReturnDate, UsersId, ClientId, returned, PrintId) VALUES (?,?,?,?,?,?)");
+            PreparedStatement stmt = con.prepareStatement("INSERT INTO service (BorrowDate, ReturnDate, ClientId, returned, PrintId) VALUES (?,?,?,?,?)");
             stmt.setString(1, service.getBorrowDate());
             stmt.setString(1, service.getReturnDate());
-            stmt.setInt(1, service.getUserId());
-            stmt.setInt(1, service.getClientId());
+            stmt.setInt(1, service.getClient().getId());
             stmt.setBoolean(1, service.getReturned());
-            stmt.setInt(1, service.getPrintId());
+            stmt.setInt(1, service.getPrint().getId());
             if (stmt.executeUpdate() > 0)
                 return service;
             return null;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             throw new ServiceException(e.getMessage());
         }
 
     }
 
-    /**
-     * @param service
-     * @return
-     * @throws SQLException
-     */
     @Override
     public Service Update(Service service) throws ServiceException {
         try {
@@ -85,16 +85,12 @@ public class ServiceImplementation implements ServiceInterface {
             return service;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             throw new ServiceException(e.getMessage());
         }
     }
 
-    /**
-     * @param service
-     * @return
-     * @throws SQLException
-     */
+
     @Override
     public Service Delete(Service service) throws ServiceException {
         try {
@@ -102,24 +98,10 @@ public class ServiceImplementation implements ServiceInterface {
             return service;
 
         }catch(SQLException e){
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             throw new ServiceException(e.getMessage());
         }
     }
-
-//    public Integer getServiceId(Integer isbn, String email) throws SQLException {
-//        Integer clientId = Client.getClientByEmail(email);
-//        if (clientId != null) {
-//            PreparedStatement stmt = con.prepareStatement("SELECT Id FROM service WHERE BookId = ? AND ClientId = ? AND returned = false LIMIT 1");
-//            stmt.setInt(1, isbn);
-//            stmt.setInt(2, clientId);
-//            ResultSet result = stmt.executeQuery();
-//            if (result.next())
-//                return result.getInt("Id");
-//        }
-//        System.out.println("Service not found, please enter a valid ISBN or email");
-//        return null;
-//    }
 //
 //    public Boolean returnBook(Integer isbn, String email) throws SQLException {
 //        Integer borrowId = this.getServiceId(isbn, email);
@@ -144,7 +126,18 @@ public class ServiceImplementation implements ServiceInterface {
 //        return null;
 //    }
 //
-//    public Boolean loan(String clientEmail, String clientName, Integer bookId, String returnDate) {
-//        return true;
-//    }
+    public Boolean loan(Service service) {
+        try {
+        PreparedStatement stmt = con.prepareStatement("INSERT INTO service (BorrowDate, ReturnDate, ClientId, PrintId) VALUES (?,?,?,?)");
+        stmt.setString(1, service.getBorrowDate());
+        stmt.setString(2, service.getReturnDate());
+        stmt.setInt(3, service.getClient().getId());
+        stmt.setInt(4, service.getPrint().getId());
+        if (stmt.executeUpdate() > 0)
+            return true;
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
 }

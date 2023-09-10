@@ -13,9 +13,17 @@ public class Service {
     private Client client;
     private Print print;
     private List<Service> services;
-
-    public Service(String borrowDate, Client client, Print print) {
-        this.BorrowDate = borrowDate;
+    public Service(){
+        this.client = new Client();
+        this.print = new Print();
+    }
+    public Service(Client client, Print print) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date()); // Now use today date.
+        c.add(Calendar.DATE, 15); // Adding 15 days
+        this.BorrowDate = sdf.format(new Date());
+        this.ReturnDate = sdf.format(c.getTime());
         this.client = client;
         this.print = print;
 
