@@ -51,25 +51,12 @@ public class PrintImplementation implements PrintInterface {
     }
 
     @Override
-    public Print Add(Print print) throws PrintException {
+    public Boolean Add(Print print) throws PrintException {
         try {
-            PreparedStatement stmt = con.prepareStatement("INSERT INTO print (ISBN) VALUES (?)", Statement.RETURN_GENERATED_KEYS);
-            stmt.setInt(1, print.getBook().getISBN());
-            if (stmt.executeUpdate() > 0) {
-                try {
-                    ResultSet generatedKeys = stmt.getGeneratedKeys();
-                    if (generatedKeys.next()) {
-                        print.setId(generatedKeys.getInt(1));
-                        return print;
-                    } else {
-                        System.out.println("Creating print failed, no ID obtained.");
-                        throw new SQLException("Creating print failed, no ID obtained.");
-                    }
-                } catch (NullPointerException n) {
-                    n.fillInStackTrace();
-                }
-            }
-            return null;
+            PreparedStatement stmt = con.prepareStatement("INSERT INTO print (Id, ISBN) VALUES (?, ?)");
+            stmt.setInt(1, print.getId());
+            stmt.setInt(2, print.getBook().getISBN());
+            return (stmt.executeUpdate() > 0);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             throw new PrintException(e.getMessage());
@@ -77,15 +64,14 @@ public class PrintImplementation implements PrintInterface {
     }
 
     @Override
-    public Print Update(Print print) throws PrintException {
+    public Boolean Update(Print print) throws PrintException {
         try {
             PreparedStatement stmt = con.prepareStatement("UPDATE print SET ISBN = ?, Status = ?, Archived = ? WHERE Id = ?");
             stmt.setInt(1, print.getBook().getISBN());
             stmt.setString(2, print.getStatus());
             stmt.setBoolean(3, print.getArchived());
             stmt.setInt(4, print.getId());
-            if (stmt.executeUpdate() > 0) return print;
-            return null;
+            return  (stmt.executeUpdate() > 0);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             throw new PrintException(e.getMessage());
@@ -93,12 +79,11 @@ public class PrintImplementation implements PrintInterface {
     }
 
     @Override
-    public Print Delete(Print print) throws PrintException {
+    public Boolean Delete(Print print) throws PrintException {
         try {
             PreparedStatement stmt = con.prepareStatement("DELETE FROM print WHERE Id = ?");
             stmt.setInt(1, print.getId());
-            if (stmt.executeUpdate() > 0) return print;
-            return null;
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             throw new PrintException(e.getMessage());
@@ -128,13 +113,64 @@ public class PrintImplementation implements PrintInterface {
             throw new PrintException(e.getMessage());
         }
     }
-
+    @Override
     public Boolean MakeLoaned(Print print) throws PrintException {
         try {
             PreparedStatement stmt = con.prepareStatement("UPDATE print SET Status = 'Loaned' WHERE Id = ?");
             stmt.setInt(1, print.getId());
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            throw new PrintException(e.getMessage());
+        }
+    }
+
+    public Integer AvailableStats() throws PrintException {
+        try {
+            PreparedStatement stmt = con.prepareStatement("SELECT COUNT(Id) as available FROM print WHERE Status = 'Available' and Archived = false");
+            ResultSet result  = stmt.executeQuery();
+            if (result.next())
+                return result.getInt("available");
+            return null;
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+            throw new PrintException(e.getMessage());
+        }
+    }
+
+    public Integer LoanedStats() throws PrintException {
+        try {
+            PreparedStatement stmt = con.prepareStatement("SELECT COUNT(Id) as loaned FROM print WHERE Status = 'Loaned' and Archived = false");
+            ResultSet result  = stmt.executeQuery();
+            if (result.next())
+                return result.getInt("loaned");
+            return null;
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+            throw new PrintException(e.getMessage());
+        }
+    }
+
+    public Integer LostStats() throws PrintException {
+        try {
+            PreparedStatement stmt = con.prepareStatement("SELECT COUNT(Id) as lost FROM print WHERE Archived = true");
+            ResultSet result  = stmt.executeQuery();
+            if (result.next())
+                return result.getInt("lost");
+            return null;
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+            throw new PrintException(e.getMessage());
+        }
+    }
+    public Integer Total() throws PrintException{
+        try {
+            PreparedStatement stmt = con.prepareStatement("SELECT COUNT(Id) as total FROM print WHERE Archived = false");
+            ResultSet result  = stmt.executeQuery();
+            if (result.next())
+                return result.getInt("total");
+            return null;
+        }catch (SQLException e){
             System.out.println(e.getMessage());
             throw new PrintException(e.getMessage());
         }

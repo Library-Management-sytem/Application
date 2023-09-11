@@ -1,14 +1,18 @@
 package DAO;
 
+import database.Datasource;
 import database.MySQL;
+import exception.BookException;
 import exception.ClientException;
 import interfaces.ClientInterface;
+import models.Book;
 import models.Client;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.List;
 
 public class ClientImplementation implements ClientInterface {
     private final Connection con = MySQL.getInstance();
@@ -16,25 +20,40 @@ public class ClientImplementation implements ClientInterface {
     public ClientImplementation() {
     }
 
-    /**
-     * @param client
-     * @return
-     * @throws ClientException
-     */
     @Override
-    public Client get(Client client) throws ClientException {
-        return null;
+    public Boolean get(Client client) throws ClientException {
+        try {
+            PreparedStatement stmt = con.prepareStatement("SELECT * FROM client WHERE Email = ?", Statement.RETURN_GENERATED_KEYS);
+            stmt.setString(1, client.getEmail());
+            ResultSet result = stmt.executeQuery();
+            if (result.next()) {
+                client.setId(result.getInt("Id"));
+                client.setName(result.getString("Name"));
+                return true;
+            }
+            return false;
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+            throw new ClientException();
+        }
+    } // Done
+
+    @Override
+    public List<Client> get() throws ClientException {
+        try {
+            QueryRunner run = new QueryRunner(Datasource.getMySQLDataSource());
+            ResultSetHandler<List<Client>> h = new BeanListHandler<>(Client.class);
+            return run.query("SELECT * FROM client", h);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            throw new ClientException(e.getMessage());
+        }
     }
 
-    /**
-     * @param client
-     * @return
-     * @throws SQLException
-     */
     @Override
     public Boolean Add(Client client) throws ClientException {
         try {
-            PreparedStatement stmt = con.prepareStatement("INSERT INTO client (Name, Email) VALUES (?, ?)");
+            PreparedStatement stmt = con.prepareStatement("INSERT INTO client (Name, Email) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, client.getName());
             stmt.setString(2, client.getEmail());
             int result = stmt.executeUpdate();
@@ -51,16 +70,11 @@ public class ClientImplementation implements ClientInterface {
             }
             return false;
         }catch (SQLException e){
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             throw new ClientException(e.getMessage());
         }
-    }
+    } // Done
 
-    /**
-     * @param client
-     * @return
-     * @throws SQLException
-     */
     @Override
     public Boolean Update(Client client) throws ClientException {
         try {
@@ -69,16 +83,11 @@ public class ClientImplementation implements ClientInterface {
             stmt.setString(2, client.getEmail());
             return (stmt.executeUpdate() > 0);
         }catch (SQLException e){
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             throw new ClientException(e.getMessage());
         }
-    }
+    } // Done
 
-    /**
-     * @param client
-     * @return
-     * @throws SQLException
-     */
     @Override
     public Boolean Delete(Client client) throws ClientException {
         try {
@@ -86,22 +95,9 @@ public class ClientImplementation implements ClientInterface {
             stmt.setInt(1, client.getId());
             return (stmt.executeUpdate() > 0);
         }catch (SQLException e){
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             throw new ClientException(e.getMessage());
         }
-    }
+    } // Done
 
-    public Integer GetId(Client client) throws ClientException {
-        try {
-            PreparedStatement stmt = con.prepareStatement("SELECT Id FROM client WHERE Email = ?");
-            stmt.setString(1, client.getEmail());
-            ResultSet result = stmt.executeQuery();
-            if (result.next())
-                return result.getInt("Id");
-            return null;
-        }catch (SQLException e){
-            e.printStackTrace();
-            throw new ClientException(e.getMessage());
-        }
-    }
 }

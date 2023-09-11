@@ -1,12 +1,12 @@
 package useCases;
 
 import DAO.BookImplementation;
+import application.Main;
 import custom.ConsoleColors;
 import exception.BookException;
-import interfaces.BookInterface;
 import models.Book;
 
-import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -21,31 +21,34 @@ public class BookOperations {
         System.out.println("------ " + ConsoleColors.YELLOW_BOLD_BRIGHT + "[5] - Delete book" + ConsoleColors.RESET);
         System.out.println("------ " + ConsoleColors.YELLOW_BOLD_BRIGHT + "[6] - Exit" + ConsoleColors.RESET);
         System.out.print("------" + ConsoleColors.BLUE + "Your choice: " + ConsoleColors.RESET);
+        try {
         int choice = sc.nextInt();
-
-        switch (choice) {
-            case 1 -> showBooks();
-            case 2 -> searchBook();
-            case 3 -> addBook();
-            case 4 -> updateBook();
-            case 5 -> deleteBook();
-            case 6 -> Exit();
-            default -> {
-                System.out.println("------" + ConsoleColors.BLUE + "Please enter a valid choice" + ConsoleColors.RESET);
-                BookInterface();
+            switch (choice) {
+                case 1 -> showBooks();
+                case 2 -> searchBook();
+                case 3 -> addBook();
+                case 4 -> updateBook();
+                case 5 -> deleteBook();
+                case 6 -> Exit();
+                default -> {
+                    System.out.println("------" + ConsoleColors.BLUE + "Please enter a valid choice" + ConsoleColors.RESET);
+                    BookInterface();
+                }
             }
+        }catch (InputMismatchException i){
+            System.out.println("Please enter a valid choice");
+            BookInterface();
         }
     }
 
     public static void showBooks() {
         BookImplementation book = new BookImplementation();
         try {
-            List<Book> books = book.getBooks();
-            String[] columnNames = {"ISBN", "Title", "Author", "Year"};
-            System.out.println("| ISBN | Title | Author | Year |");
+            List<Book> books = book.get();
+            System.out.println("| ISBN | Title | Prints available | Author | Year |");
             System.out.println("--------------------------------");
             for (Book b : books) {
-                System.out.println(b.getISBN() + " | " + b.getName() + " | " + b.getAuthor() + " | " + b.getYear());
+                System.out.println(b.getISBN() + " | " + b.getName() + " | " + b.getPrints_Available() + " | " + b.getAuthor() + " | " + b.getYear());
             }
             BookInterface();
         } catch (BookException e) {
@@ -54,23 +57,40 @@ public class BookOperations {
     } // Done
 
     public static void searchBook() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("------ " + ConsoleColors.YELLOW_BOLD_BRIGHT + "Enter the Name or Author of the book you want to find: " + ConsoleColors.RESET);
+        BookImplementation check = new BookImplementation();
+        List<Book> books = check.search(sc.nextLine());
+        if(books == null){
+            System.out.println("------ " + ConsoleColors.RED_BOLD +"The ISBN entered does not exist" + ConsoleColors.RESET);
+            searchBook();
+        }
+        System.out.println("------ " + ConsoleColors.PURPLE + "| ISBN | Title | Prints available | Author | Year |" + ConsoleColors.RESET);
+        System.out.println("------ " + ConsoleColors.PURPLE + "--------------------------------" + ConsoleColors.RESET);
+        assert books != null;
+        for (Book book: books) {
+        System.out.println("------ " + book.getISBN() + " | " + book.getName() + " | " + book.getPrints_Available() + " | " + book.getAuthor() + " | " + book.getYear());
+        System.out.println("------ " + ConsoleColors.PURPLE + "--------------------------------" + ConsoleColors.RESET);
+        }
+        BookInterface();
     }
 
     public static void addBook() {
         Scanner sc = new Scanner(System.in);
+        Scanner scInt = new Scanner(System.in);
         Book book = new Book();
         System.out.println("------ " + ConsoleColors.YELLOW_BOLD_BRIGHT + "Enter the book ISBN" + ConsoleColors.RESET);
         System.out.print("------ " + ConsoleColors.BLUE + "Your choice: " + ConsoleColors.RESET);
-        book.setISBN(sc.nextInt());
+        book.setISBN(scInt.nextInt());
         System.out.println("------" + ConsoleColors.YELLOW_BOLD_BRIGHT + "Enter the book name" + ConsoleColors.RESET);
         System.out.print("------" + ConsoleColors.BLUE + "Your choice: " + ConsoleColors.RESET);
-        book.setName(sc.next());
+        book.setName(sc.nextLine());
         System.out.println("------ " + ConsoleColors.YELLOW_BOLD_BRIGHT + "Enter the book author" + ConsoleColors.RESET);
         System.out.print("------ " + ConsoleColors.BLUE + "Your choice: " + ConsoleColors.RESET);
-        book.setAuthor(sc.next());
+        book.setAuthor(sc.nextLine());
         System.out.println("------ " + ConsoleColors.YELLOW_BOLD_BRIGHT + "Enter the book published year" + ConsoleColors.RESET);
         System.out.print("------ " + ConsoleColors.BLUE + "Your choice: " + ConsoleColors.RESET);
-        book.setYear(sc.nextInt());
+        book.setYear(scInt.nextInt());
         BookImplementation insert = new BookImplementation();
         try {
             insert.Add(book);
@@ -161,7 +181,7 @@ public class BookOperations {
                 if (check.Delete(book))
                     System.out.println("------ " + ConsoleColors.WHITE + "Your book has been deleted successfully" + ConsoleColors.RESET);
             } catch (BookException e) {
-                e.getMessage();
+                System.out.println(e.getMessage());
             }
         }
         BookInterface();
@@ -170,6 +190,6 @@ public class BookOperations {
     } // Done
 
     public static void Exit() {
-        BookInterface();
-    }
+        Main.welcome();
+    } // Done
 }

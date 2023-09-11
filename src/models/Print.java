@@ -10,6 +10,7 @@ public class Print {
     private List<Print> prints;
     private Book book;
     private Service service;
+//    private Integer Prints_Available;
     public Print(){
         this.book = new Book();
     }
@@ -47,4 +48,5 @@ public class Print {
     public void setBook(Book book){ this.book = book;}
     public Service getService(){ return service;}
     public void setService(Service service){ this.service = service;}
+
 }

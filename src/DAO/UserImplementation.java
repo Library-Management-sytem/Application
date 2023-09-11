@@ -1,12 +1,19 @@
 package DAO;
 
+import database.Datasource;
 import database.MySQL;
+import exception.ClientException;
 import exception.UserException;
 import interfaces.UserInterface;
+import models.Client;
 import models.User;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 public class UserImplementation implements UserInterface {
     public StringBuilder resultString;
@@ -20,61 +27,37 @@ public class UserImplementation implements UserInterface {
         }
     }
 
-    /**
-     * @param user 
-     * @return
-     * @throws SQLException
-     */
     @Override
-    public User get(User user) throws UserException {
-        return null;
+    public Boolean get(User user) throws UserException {
+        return false;
     }
-
-    /**
-     * @param user 
-     * @return
-     * @throws SQLException
-     */
+    @Override
+    public List<User> get() throws UserException {
+        try {
+            QueryRunner run = new QueryRunner(Datasource.getMySQLDataSource());
+            ResultSetHandler<List<User>> h = new BeanListHandler<>(User.class);
+            return run.query("SELECT * FROM user", h);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            throw new UserException(e.getMessage());
+        }
+    }
     @Override
     public User Add(User user) throws UserException {
         return null;
     }
-
-    /**
-     * @param user 
-     * @return
-     * @throws UserException
-     */
     @Override
     public User Update(User user) throws UserException {
         return null;
     }
-
-    /**
-     * @param user 
-     * @return
-     * @throws UserException
-     */
     @Override
     public User Delete(User user) throws UserException {
         return null;
     }
-
-    /**
-     * @param user 
-     * @return
-     * @throws UserException
-     */
     @Override
     public User Login(User user) throws UserException {
         return null;
     }
-
-    /**
-     * @param user 
-     * @return
-     * @throws UserException
-     */
     @Override
     public User Logout(User user) throws UserException {
         return null;

@@ -9,7 +9,8 @@ public class Client {
     private String Email;
     private List<Client> clients;
     private Service service;
-    public Client(){}
+    public Client(){
+    }
 
     public Client(String name, String email, Service service) {
         this.Name = name;

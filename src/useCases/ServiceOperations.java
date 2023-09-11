@@ -3,6 +3,8 @@ package useCases;
 import DAO.ClientImplementation;
 import DAO.PrintImplementation;
 import DAO.ServiceImplementation;
+import application.Main;
+import custom.ConsoleColors;
 import exception.ClientException;
 import exception.PrintException;
 import exception.ServiceException;
@@ -10,10 +12,32 @@ import models.Client;
 import models.Print;
 import models.Service;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ServiceOperations {
     public static void ServiceInterface(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("------ " + ConsoleColors.YELLOW_BOLD_BRIGHT + "Enter the operation you want to conduct" + ConsoleColors.RESET);
+        System.out.println("------ " + ConsoleColors.YELLOW_BOLD_BRIGHT + "[1] - Loan print" + ConsoleColors.RESET);
+        System.out.println("------ " + ConsoleColors.YELLOW_BOLD_BRIGHT + "[2] - Return print" + ConsoleColors.RESET);
+        System.out.println("------ " + ConsoleColors.YELLOW_BOLD_BRIGHT + "[6] - Exit" + ConsoleColors.RESET);
+        System.out.print("------" + ConsoleColors.BLUE + "Your choice: " + ConsoleColors.RESET);
+        try {
+            int choice = sc.nextInt();
+            switch (choice) {
+                case 1 -> loan();
+                case 2 -> returnPrint();
+                case 6 -> Main.welcome();
+                default -> {
+                    System.out.println("------" + ConsoleColors.BLUE + "Please enter a valid choice" + ConsoleColors.RESET);
+                    ServiceInterface();
+                }
+            }
+        }catch (InputMismatchException i){
+            System.out.println("Please enter a valid choice");
+            ServiceInterface();
+        }
 
     }
     public static void loan() {
@@ -81,8 +105,7 @@ public class ServiceOperations {
                 System.out.println("------" + print.getId() + "---------" + print.getBook().getISBN() + "-----------" + print.getStatus() + "------------" + print.getArchived() + "---------");
                 Service service = new Service(null, print);
                 ServiceImplementation serviceImplementation = new ServiceImplementation();
-                if(serviceImplementation.returnPrint(service)){
-                    printImplementation.MakeAvailable(print);
+                if(serviceImplementation.returnPrint(service) && printImplementation.MakeAvailable(print)){
                     System.out.println("--------------------Your print has been returned------------------------");
                 }
             }else

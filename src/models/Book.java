@@ -4,10 +4,12 @@ import java.util.List;
 
 public class Book {
     private Integer ISBN;
+    private Integer tempISBN;
     private String Name;
     private String Author;
     private Integer Year;
     private List<Book> books;
+    private Integer Prints_Available;
 
     public Book(){}
     public Book(Integer isbn, String name, String author, Integer year) {
@@ -17,12 +19,12 @@ public class Book {
         this.Year = year;
     }
 
-    public Integer getISBN(){
-        return ISBN;
-    }
+    public Integer getISBN(){return ISBN;}
     public void setISBN(Integer isbn){
         this.ISBN = isbn;
     }
+    public Integer getTempISBN(){return tempISBN;}
+    public void setTempISBN(Integer tempISBN){this.tempISBN = tempISBN;}
     public String getName(){
         return Name;
     }
@@ -45,4 +47,7 @@ public class Book {
     public void setBooks(List<Book> books) {
         this.books = books;
     }
+    public Integer getPrints_Available(){return Prints_Available;}
+
+    public void setPrints_Available(Integer prints_Available) {Prints_Available = prints_Available;}
 }
