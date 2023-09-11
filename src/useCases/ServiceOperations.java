@@ -5,6 +5,7 @@ import DAO.PrintImplementation;
 import DAO.ServiceImplementation;
 import exception.ClientException;
 import exception.PrintException;
+import exception.ServiceException;
 import models.Client;
 import models.Print;
 import models.Service;
@@ -62,6 +63,32 @@ public class ServiceOperations {
         }
     }
     public static void returnPrint(){
+        Scanner scInt = new Scanner(System.in);
+        try {
+            System.out.println("------------------------------------------------------------------------");
+            System.out.println("----------------------------Return a print------------------------------");
+            System.out.println("------------------------------------------------------------------------");
+            System.out.println("----------------------Please provide your print ID----------------------");
+            System.out.print("-------> ");
+            PrintImplementation printImplementation = new PrintImplementation();
+            Print print = new Print();
+            print.setId(scInt.nextInt());
+            if (printImplementation.get(print)){
+                System.out.println("------ ID --------- ISBN ----------- Status -----------Archived---------");
+                System.out.println("------" + print.getId() + "---------" + print.getBook().getISBN() + "-----------" + print.getStatus() + "------------" + print.getArchived() + "---------");
+                Service service = new Service(null, print);
+                ServiceImplementation serviceImplementation = new ServiceImplementation();
+                if(serviceImplementation.returnPrint(service)){
+                    printImplementation.MakeAvailable(print);
+                    System.out.println("--------------------Your print has been returned------------------------");
+                }
+            }else
+                System.out.println("--------------------Your print has not been found------------------------");
+
+        }catch (PrintException | ServiceException e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
 
     }
 }

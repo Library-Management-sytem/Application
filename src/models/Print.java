@@ -10,7 +10,9 @@ public class Print {
     private List<Print> prints;
     private Book book;
     private Service service;
-    public Print(){}
+    public Print(){
+        this.book = new Book();
+    }
     public Print(Book book, Service service) {
         this.book = book;
         this.service = service;
