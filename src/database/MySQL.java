@@ -2,7 +2,10 @@ package database;
 
 import interfaces.DBUtility;
 
-import java.sql.*;
+//import org.apache.commons.dbutils.BasicDataSource;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class MySQL implements DBUtility {
@@ -11,15 +14,17 @@ public class MySQL implements DBUtility {
     public static String username;
     public static String password;
     private static Connection instance;
+    
 
     static {
-        ResourceBundle rd =ResourceBundle.getBundle("db");
-        driver=rd.getString("db.driver");
-        url=rd.getString("db.url");
-        username=rd.getString("db.username");
-        password=rd.getString("db.password");
+        ResourceBundle rd = ResourceBundle.getBundle("db");
+        driver = rd.getString("db.driver");
+        url = rd.getString("db.url");
+        username = rd.getString("db.username");
+        password = rd.getString("db.password");
     }
-    private MySQL(){
+
+    private MySQL() {
 
     }
 
@@ -28,19 +33,19 @@ public class MySQL implements DBUtility {
             instance = new MySQL().provideConnection();
         return instance;
     }
-    private Connection provideConnection(){
+
+    private Connection provideConnection() {
         Connection connection = null;
         try {
             Class.forName(driver);
         } catch (ClassNotFoundException e) {
-            e.getException().getMessage();
+            System.out.println(e.getMessage());
         }
-//        String url="jdbc:mysql://localhost:3306/library";
 
         try {
-            connection = DriverManager.getConnection(url,username,password);
+            connection = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
 
