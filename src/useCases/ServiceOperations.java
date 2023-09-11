@@ -13,6 +13,9 @@ import models.Service;
 import java.util.Scanner;
 
 public class ServiceOperations {
+    public static void ServiceInterface(){
+
+    }
     public static void loan() {
         Scanner sc = new Scanner(System.in);
         Scanner scInt = new Scanner(System.in);
@@ -56,7 +59,7 @@ public class ServiceOperations {
                 System.out.println("--------------------The print is out for loan successfully--------------------");
             else
                 System.out.println("------------------An error occurred while registering your request----------------");
-            ServiceOperations.loan();
+            ServiceOperations.ServiceInterface();
         } catch (ClientException | PrintException e) {
             System.out.println(e.getMessage());
             throw new RuntimeException(e);
@@ -90,5 +93,20 @@ public class ServiceOperations {
             throw new RuntimeException(e);
         }
 
+    }
+    public static void showStats(){
+        PrintImplementation print = new PrintImplementation();
+        System.out.println("--------------------------------------------------------------------------");
+        System.out.println("|                              BiblioSystem                              |");
+        System.out.println("--------------------------------------------------------------------------");
+        System.out.println("|  Loaned prints   |  Available prints  |  Lost prints  |  Total prints  |");
+        System.out.println("--------------------------------------------------------------------------");
+        try {
+        System.out.println("|         " + print.LoanedStats() + "        |         " + print.AvailableStats() + "          |       " + print.LostStats() + "       |       " +  print.Total() + "        |");
+        System.out.println("--------------------------------------------------------------------------");
+
+        }catch (PrintException p){
+            System.out.println(p.getMessage());
+        }
     }
 }
