@@ -21,14 +21,14 @@ public class ServiceOperations {
         System.out.println("------ " + ConsoleColors.YELLOW_BOLD_BRIGHT + "Enter the operation you want to conduct" + ConsoleColors.RESET);
         System.out.println("------ " + ConsoleColors.YELLOW_BOLD_BRIGHT + "[1] - Loan print" + ConsoleColors.RESET);
         System.out.println("------ " + ConsoleColors.YELLOW_BOLD_BRIGHT + "[2] - Return print" + ConsoleColors.RESET);
-        System.out.println("------ " + ConsoleColors.YELLOW_BOLD_BRIGHT + "[6] - Exit" + ConsoleColors.RESET);
+        System.out.println("------ " + ConsoleColors.YELLOW_BOLD_BRIGHT + "[3] - Exit" + ConsoleColors.RESET);
         System.out.print("------" + ConsoleColors.BLUE + "Your choice: " + ConsoleColors.RESET);
         try {
             int choice = sc.nextInt();
             switch (choice) {
                 case 1 -> loan();
                 case 2 -> returnPrint();
-                case 6 -> Main.welcome();
+                case 3 -> Main.welcome();
                 default -> {
                     System.out.println("------" + ConsoleColors.BLUE + "Please enter a valid choice" + ConsoleColors.RESET);
                     ServiceInterface();
@@ -38,6 +38,9 @@ public class ServiceOperations {
             System.out.println("Please enter a valid choice");
             ServiceInterface();
         }
+
+    }
+    public static void showServices(){
 
     }
     public static void loan() {
@@ -65,18 +68,17 @@ public class ServiceOperations {
             System.out.println("----------- Name ------------------- Email -----------------------------");
             System.out.println("-----------" + client.getName() + "-------------------" + client.getEmail() + " ---------------------");
             System.out.println("--------------------Please provide your print ID------------------------");
-            System.out.print("-------> ");
-            print.setId(scInt.nextInt());
-            if (!printImplementation.get(print)) {
-                System.out.println("---------------Incorrect ID, Please enter a valid ID-----------------");
+            do {
                 System.out.print("-------> ");
                 print.setId(scInt.nextInt());
-            }
-            if (!print.getStatus().equalsIgnoreCase("Available") || print.getArchived()) {
-                System.out.println("----This print is loaned or lost, please provide another print ID----");
-                System.out.print("-------> ");
-                print.setId(scInt.nextInt());
-            }
+
+                if (!printImplementation.get(print)) {
+                    System.out.println("---------------Incorrect ID, Please enter a valid ID-----------------");
+                } else if (!print.getStatus().equalsIgnoreCase("Available") || print.getArchived()) {
+                    System.out.println("----This print is loaned or lost, please provide another print ID----");
+                }
+            } while (!printImplementation.get(print) || (!print.getStatus().equalsIgnoreCase("Available") || print.getArchived()));
+
             Service service = new Service(client, print);
             ServiceImplementation serviceImplementation = new ServiceImplementation();
             if (printImplementation.MakeLoaned(print) && serviceImplementation.loan(service))
@@ -107,6 +109,7 @@ public class ServiceOperations {
                 ServiceImplementation serviceImplementation = new ServiceImplementation();
                 if(serviceImplementation.returnPrint(service) && printImplementation.MakeAvailable(print)){
                     System.out.println("--------------------Your print has been returned------------------------");
+                    ServiceInterface();
                 }
             }else
                 System.out.println("--------------------Your print has not been found------------------------");
@@ -127,6 +130,7 @@ public class ServiceOperations {
         try {
         System.out.println("|         " + print.LoanedStats() + "        |         " + print.AvailableStats() + "          |       " + print.LostStats() + "       |       " +  print.Total() + "        |");
         System.out.println("--------------------------------------------------------------------------");
+        ServiceInterface();
 
         }catch (PrintException p){
             System.out.println(p.getMessage());

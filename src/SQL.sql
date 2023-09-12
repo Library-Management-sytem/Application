@@ -1,5 +1,5 @@
-# create database if not exists library;
-# USE library;
+create database if not exists library;
+USE library;
 
 create table user
 (
@@ -52,3 +52,21 @@ insert into book (ISBN, Name, Author, Year) values (111100, '1984', 'Jorge ORWEL
 insert into client (Name, Email) values ('Hassan','hassan@gmail.com');
 INSERT INTO print (Id, ISBN, Archived)  values (10001, 236789, 0), (10002, 236789, 0), (10003, 236789, 0), (10004, 236789, 0), (10011, 111101, 0), (10012, 111101, 0);
 INSERT INTO service (PrintId, BorrowDate, ReturnDate, ClientId)  values (00001, '2023-09-01', '2023-09-15', 1), (00012, '2023-08-25', '2023-09-11', 1);
+
+
+DELIMITER //
+CREATE EVENT daily_archiving
+    ON SCHEDULE EVERY 1 DAY STARTS TIMESTAMP(CURRENT_DATE, '00:00:00')
+    DO
+    BEGIN
+        UPDATE print
+        SET Archived = true
+        WHERE EXISTS (
+            SELECT PrintId, ReturnDate
+            FROM service
+            WHERE print.Id = service.PrintId
+              AND DATE_ADD(service.ReturnDate, INTERVAL 10 DAY) <= CURRENT_DATE
+        );
+    END;
+
+SET GLOBAL event_scheduler = ON;
