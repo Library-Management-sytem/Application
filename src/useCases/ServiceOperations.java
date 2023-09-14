@@ -48,9 +48,9 @@ public class ServiceOperations {
         Scanner scInt = new Scanner(System.in);
         try {
             System.out.println("------------------------------------------------------------------------");
-            System.out.println("------------------------------Loan a book-------------------------------");
+            System.out.println("|                             Loan a book                              |");
             System.out.println("------------------------------------------------------------------------");
-            System.out.println("--------------------Please provide your client email--------------------");
+            System.out.println("-------> Please provide your client email");
             System.out.print("-------> ");
             ClientImplementation clientImplementation = new ClientImplementation();
             PrintImplementation printImplementation = new PrintImplementation();
@@ -59,32 +59,35 @@ public class ServiceOperations {
             client.setEmail(sc.nextLine());
             clientImplementation.get(client);
             if (!clientImplementation.get(client)) {
-                System.out.println("--------------------Please provide your client name--------------------");
+                System.out.println("-------> Please provide your client name");
                 System.out.print("-------> ");
                 client.setName(sc.nextLine());
                 if (!clientImplementation.Add(client))
-                    System.out.println("------------------An error occurred while creating client----------------");
+                    System.out.println("-------> An error occurred while creating client");
             }
-            System.out.println("----------- Name ------------------- Email -----------------------------");
-            System.out.println("-----------" + client.getName() + "-------------------" + client.getEmail() + " ---------------------");
-            System.out.println("--------------------Please provide your print ID------------------------");
+            System.out.printf(ConsoleColors.BLUE + "---------------------------------------------------------%n");
+            System.out.printf(ConsoleColors.BLUE_BOLD + "# %-20s | %-30s #%n", "Client Name", "Email");
+            System.out.printf(ConsoleColors.BLUE + "---------------------------------------------------------%n" + ConsoleColors.RESET);
+            System.out.printf("# %-20s | %-30s #%n", client.getName(), client.getEmail());
+            System.out.printf("---------------------------------------------------------%n"+ ConsoleColors.RESET);
+            System.out.println("-------> Please provide your print ID");
             do {
                 System.out.print("-------> ");
                 print.setId(scInt.nextInt());
 
                 if (!printImplementation.get(print)) {
-                    System.out.println("---------------Incorrect ID, Please enter a valid ID-----------------");
-                } else if (!print.getStatus().equalsIgnoreCase("Available") || print.getArchived()) {
-                    System.out.println("----This print is loaned or lost, please provide another print ID----");
+                    System.out.println(ConsoleColors.RED +"-------> Incorrect ID, Please enter a valid ID");
+                } else if (print.getStatus() != Print.Status.Available || print.getArchived()) {
+                    System.out.println(ConsoleColors.YELLOW_BOLD_BRIGHT +"-------> This print is loaned or lost, please provide another print ID");
                 }
-            } while (!printImplementation.get(print) || (!print.getStatus().equalsIgnoreCase("Available") || print.getArchived()));
+            } while (!printImplementation.get(print) || (print.getStatus() != Print.Status.Available || print.getArchived()));
 
             Service service = new Service(client, print);
             ServiceImplementation serviceImplementation = new ServiceImplementation();
             if (printImplementation.MakeLoaned(print) && serviceImplementation.loan(service))
-                System.out.println("--------------------The print is out for loan successfully--------------------");
+                System.out.println(ConsoleColors.GREEN_BOLD + "-------> The print is out for loan successfully");
             else
-                System.out.println("------------------An error occurred while registering your request----------------");
+                System.out.println(ConsoleColors.RED_BOLD + "-------> An error occurred while registering your request");
             ServiceOperations.ServiceInterface();
         } catch (ClientException | PrintException e) {
             System.out.println(e.getMessage());
@@ -95,24 +98,27 @@ public class ServiceOperations {
         Scanner scInt = new Scanner(System.in);
         try {
             System.out.println("------------------------------------------------------------------------");
-            System.out.println("----------------------------Return a print------------------------------");
+            System.out.println("|                           Return a print                             |");
             System.out.println("------------------------------------------------------------------------");
-            System.out.println("----------------------Please provide your print ID----------------------");
+            System.out.println("-------> Please provide your print ID");
             System.out.print("-------> ");
             PrintImplementation printImplementation = new PrintImplementation();
             Print print = new Print();
             print.setId(scInt.nextInt());
             if (printImplementation.get(print)){
-                System.out.println("------ ID --------- ISBN ----------- Status -----------Archived---------");
-                System.out.println("------" + print.getId() + "---------" + print.getBook().getISBN() + "-----------" + print.getStatus() + "------------" + print.getArchived() + "---------");
                 Service service = new Service(null, print);
                 ServiceImplementation serviceImplementation = new ServiceImplementation();
                 if(serviceImplementation.returnPrint(service) && printImplementation.MakeAvailable(print)){
-                    System.out.println("--------------------Your print has been returned------------------------");
+                    System.out.printf(ConsoleColors.BLUE + "-------------------------------------------------------------------------------------------------------%n");
+                    System.out.printf(ConsoleColors.BLUE_BOLD + "# %-20s | %-30s | %-20s | %-20s #%n", "Print ID", "Book ISBN", "Status", "Archived");
+                    System.out.printf(ConsoleColors.BLUE + "-------------------------------------------------------------------------------------------------------%n" + ConsoleColors.RESET);
+                    System.out.printf("# %-20d | %-30d | %-20s | %-20s #%n", print.getId(), print.getBook().getISBN(), print.getStatus(), print.getArchived());
+                    System.out.printf("-------------------------------------------------------------------------------------------------------%n"+ ConsoleColors.RESET);
+                    System.out.println(ConsoleColors.GREEN_BOLD + "-------> Your print has been returned");
                     ServiceInterface();
                 }
             }else
-                System.out.println("--------------------Your print has not been found------------------------");
+                System.out.println(ConsoleColors.RED + "-------> Your print has not been found");
 
         }catch (PrintException | ServiceException e) {
             System.out.println(e.getMessage());
@@ -122,14 +128,14 @@ public class ServiceOperations {
     }
     public static void showStats(){
         PrintImplementation print = new PrintImplementation();
-        System.out.println("--------------------------------------------------------------------------");
-        System.out.println("|                              BiblioSystem                              |");
-        System.out.println("--------------------------------------------------------------------------");
-        System.out.println("|  Loaned prints   |  Available prints  |  Lost prints  |  Total prints  |");
-        System.out.println("--------------------------------------------------------------------------");
         try {
-        System.out.println("|         " + print.LoanedStats() + "        |         " + print.AvailableStats() + "          |       " + print.LostStats() + "       |       " +  print.Total() + "        |");
-        System.out.println("--------------------------------------------------------------------------");
+        System.out.printf("---------------------------------------------------------------------------------------------%n");
+        System.out.printf(ConsoleColors.RED_BOLD +"|                                       BiblioSystem                                        |%n"+ ConsoleColors.RESET);
+        System.out.printf(ConsoleColors.BLUE + "---------------------------------------------------------------------------------------------%n");
+        System.out.printf("# "+ ConsoleColors.YELLOW_BOLD_BRIGHT +"%-20s | "+ ConsoleColors.GREEN_BRIGHT +"%-20s | "+ ConsoleColors.RED_BRIGHT +"%-20s | "+ ConsoleColors.BLUE +"%-20s |%n", "Borrowed", "Available", "Lost", "Total");
+        System.out.printf(ConsoleColors.BLUE + "---------------------------------------------------------------------------------------------%n" + ConsoleColors.RESET);
+        System.out.printf("# "+ ConsoleColors.YELLOW_BOLD_BRIGHT +"%-20d | "+ ConsoleColors.GREEN_BRIGHT +"%-20d | "+ ConsoleColors.RED_BRIGHT +"%-20d | "+ ConsoleColors.BLUE +"%-20d |%n", print.LoanedStats(), print.AvailableStats(), print.LostStats(), print.Total());
+        System.out.printf("---------------------------------------------------------------------------------------------%n"+ ConsoleColors.RESET);
         ServiceInterface();
 
         }catch (PrintException p){

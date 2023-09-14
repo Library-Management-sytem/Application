@@ -28,36 +28,15 @@ public class PrintOperations {
                 case 2 -> deletePrint();
                 case 3 -> Exit();
                 default -> {
-                    System.out.println("------" + ConsoleColors.BLUE + "Please enter a valid choice" + ConsoleColors.RESET);
+                    System.out.println("------" + ConsoleColors.RED + "Please enter a valid choice" + ConsoleColors.RESET);
                     PrintInterface();
                 }
             }
         } catch (InputMismatchException i) {
-            System.out.println("Please enter a valid choice");
+            System.out.println(ConsoleColors.RED + "Please enter a valid choice");
             PrintInterface();
         }
     }
-
-//    public static void searchPrint() {
-//        Book book = new Book();
-//        System.out.print("------ " + ConsoleColors.YELLOW_BOLD_BRIGHT + "Enter the ISBN of the book you want to find: " + ConsoleColors.RESET);
-//        book.setISBN(scInt.nextInt());
-//        BookImplementation check = new BookImplementation();
-//        try {
-//            check.get(book);
-//            if(book.getISBN() == null){
-//                System.out.println("------ " + ConsoleColors.RED_BOLD +"The ISBN entered does not exist" + ConsoleColors.RESET);
-//                searchPrint();
-//            }
-//        } catch (BookException e) {
-//            throw new RuntimeException(e);
-//        }
-//        System.out.println("------ " + ConsoleColors.PURPLE + "| ISBN | Title | Author | Year |" + ConsoleColors.RESET);
-//        System.out.println("------ " + ConsoleColors.PURPLE + "--------------------------------" + ConsoleColors.RESET);
-//        System.out.println("------ " + book.getISBN() + " | " + book.getName() + " | " + book.getAuthor() + " | " + book.getYear());
-//        System.out.println("------ " + ConsoleColors.PURPLE + "--------------------------------" + ConsoleColors.RESET);
-//        PrintInterface();
-//    }
 
     public static void addPrint() {
         Book book = new Book();
@@ -78,7 +57,7 @@ public class PrintOperations {
             print.setId(sc.nextInt());
             print.setBook(book);
             insert.Add(print);
-            System.out.println("------ " + ConsoleColors.WHITE + "Your print has been added successfully" + ConsoleColors.RESET);
+            System.out.println("------ " + ConsoleColors.GREEN_BOLD + "Your print has been added successfully" + ConsoleColors.RESET);
         } catch (BookException | PrintException e) {
             String result = e.getMessage();
             System.out.println(ConsoleColors.RED_BACKGROUND + ConsoleColors.WHITE_BOLD_BRIGHT + result + ConsoleColors.RESET);
@@ -101,7 +80,7 @@ public class PrintOperations {
         if (sc1.nextLine().equalsIgnoreCase("YES")) {
             try {
                 if (check.Delete(print))
-                    System.out.println("------ " + ConsoleColors.WHITE + "Your print has been deleted successfully" + ConsoleColors.RESET);
+                    System.out.println("------ " + ConsoleColors.GREEN_BOLD + "Your print has been deleted successfully" + ConsoleColors.RESET);
             } catch (PrintException e) {
                 System.out.println(e.getMessage());
                 throw new RuntimeException(e);

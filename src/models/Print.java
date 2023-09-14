@@ -5,7 +5,8 @@ import java.util.List;
 public class Print {
     public static Print instance;
     private Integer Id;
-    private String Status;
+    public static enum Status{ Available, Borrowed}
+    private Status status;
     private Boolean Archived;
     private List<Print> prints;
     private Book book;
@@ -19,6 +20,14 @@ public class Print {
         this.service = service;
     }
 
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
     public Integer getId() {
         return Id;
     }
@@ -27,13 +36,7 @@ public class Print {
         this.Id = id;
     }
 
-    public String getStatus() {
-        return Status;
-    }
 
-    public void setStatus(String status) {
-        this.Status = status;
-    }
 
     public Boolean getArchived() {
         return Archived;

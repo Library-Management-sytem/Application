@@ -45,10 +45,12 @@ public class BookOperations {
         BookImplementation book = new BookImplementation();
         try {
             List<Book> books = book.get();
-            System.out.println("| ISBN | Title | Prints available | Author | Year |");
-            System.out.println("--------------------------------");
+            System.out.printf(ConsoleColors.BLUE + "------------------------------------------------------------------------------------------------------------------------------%n");
+            System.out.printf(ConsoleColors.BLUE_BOLD + "# %-20s | %-30s | %-20s | %-20s | %-20s #%n", "ISBN", "Title     ", "Prints available", "Author", "Year");
+            System.out.printf(ConsoleColors.BLUE + "------------------------------------------------------------------------------------------------------------------------------%n" + ConsoleColors.RESET);
             for (Book b : books) {
-                System.out.println(b.getISBN() + " | " + b.getName() + " | " + b.getPrints_Available() + " | " + b.getAuthor() + " | " + b.getYear());
+                System.out.printf("# %-20d | %-30s |"+ ConsoleColors.YELLOW + " %-20d "+ ConsoleColors.RESET + "| %-20s | %-20d #%n", b.getISBN(), b.getName() , b.getPrints_Available(), b.getAuthor(), b.getYear());
+                System.out.printf("------------------------------------------------------------------------------------------------------------------------------%n"+ ConsoleColors.RESET);
             }
             BookInterface();
         } catch (BookException e) {
@@ -61,16 +63,13 @@ public class BookOperations {
         System.out.print("------ " + ConsoleColors.YELLOW_BOLD_BRIGHT + "Enter the Name or Author of the book you want to find: " + ConsoleColors.RESET);
         BookImplementation check = new BookImplementation();
         List<Book> books = check.search(sc.nextLine());
-        if(books == null){
-            System.out.println("------ " + ConsoleColors.RED_BOLD +"The ISBN entered does not exist" + ConsoleColors.RESET);
-            searchBook();
-        }
-        System.out.println("------ " + ConsoleColors.PURPLE + "| ISBN | Title | Prints available | Author | Year |" + ConsoleColors.RESET);
-        System.out.println("------ " + ConsoleColors.PURPLE + "--------------------------------" + ConsoleColors.RESET);
+        System.out.printf(ConsoleColors.BLUE + "------------------------------------------------------------------------------------------------------------------------------%n");
+        System.out.printf(ConsoleColors.BLUE_BOLD + "# %-20s | %-30s | %-20s | %-20s | %-20s #%n", "ISBN", "Title     ", "Prints available", "Author", "Year");
+        System.out.printf(ConsoleColors.BLUE + "------------------------------------------------------------------------------------------------------------------------------%n" + ConsoleColors.RESET);
         assert books != null;
         for (Book book: books) {
-        System.out.println("------ " + book.getISBN() + " | " + book.getName() + " | " + book.getPrints_Available() + " | " + book.getAuthor() + " | " + book.getYear());
-        System.out.println("------ " + ConsoleColors.PURPLE + "--------------------------------" + ConsoleColors.RESET);
+            System.out.printf("# %-20d | %-30s |"+ ConsoleColors.YELLOW + " %-20d "+ ConsoleColors.RESET + "| %-20s | %-20d #%n", book.getISBN(), book.getName() , book.getPrints_Available(), book.getAuthor(), book.getYear());
+            System.out.printf("------------------------------------------------------------------------------------------------------------------------------%n"+ ConsoleColors.RESET);
         }
         BookInterface();
     }
@@ -94,7 +93,7 @@ public class BookOperations {
         BookImplementation insert = new BookImplementation();
         try {
             insert.Add(book);
-            System.out.println("------ " + ConsoleColors.WHITE + "Your book has been added successfully" + ConsoleColors.RESET);
+            System.out.println("------ " + ConsoleColors.GREEN + "Your book has been added successfully" + ConsoleColors.RESET);
         } catch (BookException e) {
             String result = e.getMessage();
             System.out.println(ConsoleColors.RED_BACKGROUND + ConsoleColors.WHITE_BOLD_BRIGHT + result + ConsoleColors.RESET);
@@ -112,6 +111,7 @@ public class BookOperations {
         Scanner scInt = new Scanner(System.in);
         Book book = new Book();
         System.out.println("------ " + ConsoleColors.YELLOW_BOLD_BRIGHT + "Enter the ISBN of the book you want to modify" + ConsoleColors.RESET);
+        System.out.print("------" + ConsoleColors.BLUE + "Your choice: " + ConsoleColors.RESET);
         book.setISBN(scInt.nextInt());
         BookImplementation check = new BookImplementation();
         try {

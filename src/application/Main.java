@@ -33,16 +33,16 @@ public class Main {
 
     public static void welcome(){
         Scanner sc = new Scanner(System.in);
-        System.out.println(ConsoleColors.CYAN_BACKGROUND+ConsoleColors.RED+"######################################################################################################################################");
-        System.out.println("#                                                 " +ConsoleColors.CYAN_BACKGROUND+ConsoleColors.RED+"WELCOME TO BIBLIOSYTEM"+ ConsoleColors.RESET+"                                                             #");
-        System.out.println("#                                      " +ConsoleColors.BLUE_BOLD_BRIGHT+"The standalone system to manage your library" + ConsoleColors.RESET+"                                                  #");
-        System.out.println(ConsoleColors.CYAN_BACKGROUND+ConsoleColors.RED+"######################################################################################################################################");
-        System.out.println("------ " + ConsoleColors.YELLOW_BOLD_BRIGHT + "Enter the operation you want to conduct" + ConsoleColors.RESET);
-        System.out.println("------ " + ConsoleColors.YELLOW_BOLD_BRIGHT + "[1] - Books management" + ConsoleColors.RESET);
-        System.out.println("------ " + ConsoleColors.YELLOW_BOLD_BRIGHT + "[2] - Loan and Return " + ConsoleColors.RESET);
-        System.out.println("------ " + ConsoleColors.YELLOW_BOLD_BRIGHT + "[3] - Prints management" + ConsoleColors.RESET);
-        System.out.println("------ " + ConsoleColors.YELLOW_BOLD_BRIGHT + "[4] - Show statistics" + ConsoleColors.RESET);
-        System.out.println("------ " + ConsoleColors.YELLOW_BOLD_BRIGHT + "[5] - Exit" + ConsoleColors.RESET);
+        System.out.println("--------------------------------------------------------------------------");
+        System.out.println("|                         WELCOME TO BIBLIOSYTEM                         |");
+        System.out.println("|              The standalone system to manage your library              |");
+        System.out.println("--------------------------------------------------------------------------");
+        System.out.println("------ " + ConsoleColors.BLUE_BOLD_BRIGHT + "Enter the operation you want to conduct" + ConsoleColors.RESET);
+        System.out.println("------ " + ConsoleColors.BLUE_BOLD_BRIGHT + "[1] - Books management" + ConsoleColors.RESET);
+        System.out.println("------ " + ConsoleColors.BLUE_BOLD_BRIGHT + "[2] - Loan and Return " + ConsoleColors.RESET);
+        System.out.println("------ " + ConsoleColors.BLUE_BOLD_BRIGHT + "[3] - Prints management" + ConsoleColors.RESET);
+        System.out.println("------ " + ConsoleColors.BLUE_BOLD_BRIGHT + "[4] - Show statistics" + ConsoleColors.RESET);
+        System.out.println("------ " + ConsoleColors.BLUE_BOLD_BRIGHT + "[5] - Exit" + ConsoleColors.RESET);
         System.out.print("------" + ConsoleColors.BLUE + "Your choice: " + ConsoleColors.RESET);
         try {
             int choice = sc.nextInt();
@@ -62,15 +62,5 @@ public class Main {
             welcome();
         }
     }
-
-//        System.out.println("                                      " +ConsoleColors.PURPLE_BOLD_BRIGHT + "[1] LOG IN"+ ConsoleColors.RESET);
-//        System.out.println("Press 2 to" +ConsoleColors.PURPLE_BOLD_BRIGHT + " Register as Buyer." + ConsoleColors.RESET);
-//        System.out.println("Press 3 to" +ConsoleColors.PURPLE_BOLD_BRIGHT + " logIn as Buyer."+ ConsoleColors.RESET);
-//        System.out.println("Press 4 to" +ConsoleColors.PURPLE_BOLD_BRIGHT + " Register as Seller." + ConsoleColors.RESET);
-//        System.out.println("Press 5 to" +ConsoleColors.PURPLE_BOLD_BRIGHT + " logIn as Seller."+ ConsoleColors.RESET);
-//        System.out.println("                                      " +ConsoleColors.PURPLE_BOLD_BRIGHT +"[2] EXIT"+ ConsoleColors.RESET);
-//        System.out.print("                                      " +ConsoleColors.BLUE +"CHOOSE AN OPTION: "+ ConsoleColors.RESET);
-//        String choice = sc.nextLine();
-//    }
 
 }
